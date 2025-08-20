@@ -39,10 +39,10 @@ public class AmadeusK {
                         task.markAsDone();
                         printMessage("Nice! I've marked this task as done:\n  [X] " + task.getDescription());
                     } else {
-                        printMessage("OOPS!!! The task number is invalid");
+                        printMessage("Sorry, that task number does not exist.");
                     }
                 } catch (Exception e) {
-                    printMessage("OOPS!!! The task number is invalid");
+                    printMessage("Please enter a valid task number to mark.");
                 }
                 input = sc.nextLine();
             }
@@ -54,10 +54,10 @@ public class AmadeusK {
                         task.markAsUndone();
                         printMessage("OK, I've marked this task as not done yet:\n  [ ] " + task.getDescription());
                     } else {
-                        printMessage("OOPS!!! The task number is invalid");
+                        printMessage("Sorry, that task number does not exist.");
                     }
                 } catch (Exception e) {
-                    printMessage("OOPS!!! The task number is invalid");
+                    printMessage("Please enter a valid task number to unmark.");
                 }
                 input = sc.nextLine();
             }
@@ -75,7 +75,7 @@ public class AmadeusK {
                     tasks.add(newTask);
                     printMessage("Got it. I've added this task:\n  " + newTask + "\nNow you have " + tasks.size() + " tasks in the list.");
                 } else {
-                    printMessage("OOPS!!! The deadline format is wrong");
+                    printMessage("Please use the format: deadline <description> /by <time>");
                 }
                 input = sc.nextLine();
             }
@@ -88,15 +88,15 @@ public class AmadeusK {
                         tasks.add(newTask);
                         printMessage("Got it. I've added this task:\n  " + newTask + "\nNow you have " + tasks.size() + " tasks in the list.");
                     } else {
-                        printMessage("OOPS!!! The event format is wrong");
+                        printMessage("Please use the format: event <description> /from <start> /to <end>");
                     }
                 } else {
-                    printMessage("OOPS!!! The event format is wrong");
+                    printMessage("Please use the format: event <description> /from <start> /to <end>");
                 }
                 input = sc.nextLine();
             }
             else {
-                printMessage("OOPS!!! I'm sorry, but I don't know what that means :-(");
+                printMessage("Sorry, I didn't understand that command. Please try again!");
                 input = sc.nextLine(); 
             }
         }
@@ -104,5 +104,5 @@ public class AmadeusK {
         sc.close(); 
     }
 }
-  
+
 
