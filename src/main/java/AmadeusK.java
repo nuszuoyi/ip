@@ -95,6 +95,20 @@ public class AmadeusK {
                 }
                 input = sc.nextLine();
             }
+            else if (input.startsWith("delete")) {
+                try {
+                    int index = Integer.parseInt(input.split(" ")[1]) - 1;
+                    if (index >= 0 && index < tasks.size()) {
+                        Task removed = tasks.remove(index);
+                        printMessage("Noted. I've removed this task:\n  " + removed + "\nNow you have " + tasks.size() + " tasks in the list.");
+                    } else {
+                        printMessage("Sorry, that task number does not exist.");
+                    }
+                } catch (Exception e) {
+                    printMessage("Please enter a valid task number to delete.");
+                }
+                input = sc.nextLine();
+            }
             else {
                 printMessage("Sorry, I didn't understand that command. Please try again!");
                 input = sc.nextLine(); 

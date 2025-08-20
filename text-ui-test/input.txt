@@ -4,5 +4,10 @@ event project meeting /from Mon 2pm /to 4pm
 list
 mark 1
 unmark 1
+delete 2
+mark 5
+unmark 0
+delete 10
+todo finish homework
 blah
 bye
