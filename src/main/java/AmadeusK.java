@@ -17,7 +17,7 @@ public class AmadeusK {
         Scanner sc = new Scanner(System.in);  
         ArrayList<Task> tasks = new ArrayList<>();
         
-        printMessage("Hello! I'm AmadeusK\n What can I do for you?");
+        printMessage("Hello! I'm AmadeusK\nWhat can I do for you?");
         String input = sc.nextLine();  
         
         while (!input.equals("bye")) {
@@ -25,9 +25,7 @@ public class AmadeusK {
                 StringBuilder output = new StringBuilder().append("Here are the tasks in your list:\n");
                 for (int i = 0; i < tasks.size(); i++) {
                     Task task = tasks.get(i);
-                    output.append(i + 1).append(".");
-                    output.append("[" + task.getStatusIcon() + "] ");
-                    output.append(task.getDescription()).append("\n");
+                    output.append(i+1 + ".").append(task.toString()).append("\n");
                 }
                 
                 printMessage(output.toString());
@@ -67,7 +65,7 @@ public class AmadeusK {
                 String description = input.substring(5);
                 Task newTask = new ToDo(description);
                 tasks.add(newTask);
-                printMessage("Got it. I've added this task:\n  " + newTask + "\n Now you have " + tasks.size() + " tasks in the list.");
+                printMessage("Got it. I've added this task:\n  " + newTask + "\nNow you have " + tasks.size() + " tasks in the list.");
                 input = sc.nextLine();
             }
             else if (input.startsWith("deadline")) {
@@ -75,7 +73,7 @@ public class AmadeusK {
                 if (parts.length == 2) {
                     Task newTask = new Deadline(parts[0], parts[1]);
                     tasks.add(newTask);
-                    printMessage("Got it. I've added this task:\n  " + newTask + "\n Now you have " + tasks.size() + " tasks in the list.");
+                    printMessage("Got it. I've added this task:\n  " + newTask + "\nNow you have " + tasks.size() + " tasks in the list.");
                 } else {
                     printMessage("OOPS!!! The deadline format is wrong");
                 }
@@ -88,7 +86,7 @@ public class AmadeusK {
                     if (timeParts.length == 2) {
                         Task newTask = new Event(parts[0], timeParts[0], timeParts[1]);
                         tasks.add(newTask);
-                        printMessage("Got it. I've added this task:\n  " + newTask + "\n Now you have " + tasks.size() + " tasks in the list.");
+                        printMessage("Got it. I've added this task:\n  " + newTask + "\nNow you have " + tasks.size() + " tasks in the list.");
                     } else {
                         printMessage("OOPS!!! The event format is wrong");
                     }
@@ -98,7 +96,7 @@ public class AmadeusK {
                 input = sc.nextLine();
             }
             else {
-                printMessage("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
+                printMessage("OOPS!!! I'm sorry, but I don't know what that means :-(");
                 input = sc.nextLine(); 
             }
         }
