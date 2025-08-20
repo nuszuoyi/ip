@@ -63,10 +63,42 @@ public class AmadeusK {
                 }
                 input = sc.nextLine();
             }
-            else {
-                Task newTask = new Task(input);
+            else if (input.startsWith("todo")) {
+                String description = input.substring(5);
+                Task newTask = new ToDo(description);
                 tasks.add(newTask);
-                printMessage("added: " + input);
+                printMessage("Got it. I've added this task:\n  " + newTask + "\n Now you have " + tasks.size() + " tasks in the list.");
+                input = sc.nextLine();
+            }
+            else if (input.startsWith("deadline")) {
+                String[] parts = input.substring(9).split(" /by ");
+                if (parts.length == 2) {
+                    Task newTask = new Deadline(parts[0], parts[1]);
+                    tasks.add(newTask);
+                    printMessage("Got it. I've added this task:\n  " + newTask + "\n Now you have " + tasks.size() + " tasks in the list.");
+                } else {
+                    printMessage("OOPS!!! The deadline format is wrong");
+                }
+                input = sc.nextLine();
+            }
+            else if (input.startsWith("event")) {
+                String[] parts = input.substring(6).split(" /from ");
+                if (parts.length == 2) {
+                    String[] timeParts = parts[1].split(" /to ");
+                    if (timeParts.length == 2) {
+                        Task newTask = new Event(parts[0], timeParts[0], timeParts[1]);
+                        tasks.add(newTask);
+                        printMessage("Got it. I've added this task:\n  " + newTask + "\n Now you have " + tasks.size() + " tasks in the list.");
+                    } else {
+                        printMessage("OOPS!!! The event format is wrong");
+                    }
+                } else {
+                    printMessage("OOPS!!! The event format is wrong");
+                }
+                input = sc.nextLine();
+            }
+            else {
+                printMessage("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
                 input = sc.nextLine(); 
             }
         }
@@ -74,4 +106,5 @@ public class AmadeusK {
         sc.close(); 
     }
 }
+  
 
