@@ -30,4 +30,3 @@ public class Ui {
         System.out.println("Oops! Something went wrong while loading your tasks.");
     }
 }
-
