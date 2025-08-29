@@ -1,3 +1,4 @@
+package task;
 public abstract class Task {
     protected String description;
     protected boolean isDone;
@@ -7,6 +8,10 @@ public abstract class Task {
         this.description = description;
         this.isDone = false;
         this.type = type;
+    }
+
+    public boolean isDone() {
+        return isDone;
     }
 
     public void markAsDone() {

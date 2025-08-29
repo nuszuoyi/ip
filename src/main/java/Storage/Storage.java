@@ -1,4 +1,12 @@
+package Storage;
 import java.util.ArrayList;
+
+import Exception.AmadeusKException;
+import task.Deadline;
+import task.Event;
+import task.Task;
+import task.ToDo;
+
 import java.io.*;
 
 public class Storage  {
@@ -16,13 +24,13 @@ public class Storage  {
             for (Task task : tasks) {
                 String line = "";
                 if (task instanceof ToDo) {
-                    line = String.format("T | %d | %s", task.isDone ? 1 : 0, task.getDescription());
+                    line = String.format("T | %d | %s", task.isDone() ? 1 : 0, task.getDescription());
                 } else if (task instanceof Deadline) {
                     Deadline d = (Deadline) task;
-                    line = String.format("D | %d | %s | %s", d.isDone ? 1 : 0, d.getDescription(), d.getByRaw());
+                    line = String.format("D | %d | %s | %s", d.isDone() ? 1 : 0, d.getDescription(), d.getByRaw());
                 } else if (task instanceof Event) {
                     Event e = (Event) task;
-                    line = String.format("E | %d | %s | %s | %s", e.isDone ? 1 : 0, e.getDescription(), e.getFromRaw(), e.getToRaw());
+                    line = String.format("E | %d | %s | %s | %s", e.isDone() ? 1 : 0, e.getDescription(), e.getFromRaw(), e.getToRaw());
                 }
                 writer.write(line);
                 writer.newLine();

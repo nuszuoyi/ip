@@ -1,4 +1,14 @@
+package AmadeusK;
 import java.util.Scanner;
+
+import Exception.AmadeusKException;
+import Storage.Storage;
+import task.Deadline;
+import task.Event;
+import task.Task;
+import task.TaskList;
+import task.ToDo;
+
 import java.io.File;
 
 public class AmadeusK {

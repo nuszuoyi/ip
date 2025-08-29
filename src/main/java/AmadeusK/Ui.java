@@ -1,3 +1,4 @@
+package AmadeusK;
 public class Ui {
     public void printMessage(String message) {
         String horizontalLine = "    ____________________________________________________________";
