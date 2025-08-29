@@ -28,7 +28,7 @@ test {
 }
 
 application {
-    mainClass = "AmadeusK.AmadeusK"
+    mainClass = "main.Amadeus"
 }
 
 shadowJar {

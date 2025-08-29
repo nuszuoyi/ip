@@ -1,28 +1,45 @@
-package AmadeusK;
+package parser;
 
-import task.Task;
-import task.ToDo;
-import task.Deadline;
-import task.Event;
+import tasks.Deadline;
+import tasks.Event;
+import tasks.Task;
+import tasks.ToDo;
 
+/**
+ * Parses user input into commands and provides convenient Task creation.
+ */
 public class Parser {
 
+    /** Enum representing all possible command types */
     public enum CommandType {
         LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, BYE, INVALID
     }
 
+    /**
+     * Represents a parsed user command.
+     * Contains the command type and associated arguments.
+     */
     public static class Command {
         public final CommandType type;
         public final String[] args;
 
+        /**
+         * Constructs a Command with the specified type and arguments.
+         *
+         * @param type Type of the command.
+         * @param args Arguments associated with the command.
+         */
         public Command(CommandType type, String[] args) {
             this.type = type;
             this.args = args;
         }
     }
 
-    /** 
-     * 解析用户输入，返回 Command 对象
+    /**
+     * Parses the user input string and returns a corresponding Command object.
+     *
+     * @param input User input string.
+     * @return Parsed Command object; returns CommandType.INVALID if input is invalid.
      */
     public static Command parse(String input) {
         if (input.equals("list")) {
@@ -59,18 +76,21 @@ public class Parser {
     }
 
     /**
-     * 方便直接生成 Task 对象
+     * Generates a Task object from a given Command object.
+     *
+     * @param command Command from which to generate the Task.
+     * @return Task object corresponding to the command; returns null for unsupported commands.
      */
     public static Task createTask(Command command) {
         switch (command.type) {
-            case TODO:
-                return new ToDo(command.args[0]);
-            case DEADLINE:
-                return new Deadline(command.args[0], command.args[1]);
-            case EVENT:
-                return new Event(command.args[0], command.args[1], command.args[2]);
-            default:
-                return null;
+        case TODO:
+            return new ToDo(command.args[0]);
+        case DEADLINE:
+            return new Deadline(command.args[0], command.args[1]);
+        case EVENT:
+            return new Event(command.args[0], command.args[1], command.args[2]);
+        default:
+            return null;
         }
     }
 }
