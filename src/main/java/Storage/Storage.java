@@ -1,25 +1,43 @@
-package Storage;
+package storage;
+
 import java.util.ArrayList;
-
-import Exception.AmadeusKException;
-import task.Deadline;
-import task.Event;
-import task.Task;
-import task.ToDo;
-
 import java.io.*;
 
-public class Storage  {
+import exceptions.AmadeusException;
+import tasks.Task;
+import tasks.ToDo;
+import tasks.Deadline;
+import tasks.Event;
+
+/**
+ * Handles saving and loading tasks from the local file system.
+ */
+public class Storage {
+
+    /** File path where tasks are saved and loaded from */
     private final String filePath;
 
+    /**
+     * Constructs a Storage object with the specified file path.
+     *
+     * @param filePath Path to the file for storing tasks.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Saves the given list of tasks to the file.
+     *
+     * @param tasks List of tasks to be saved.
+     */
     public void saveTasks(ArrayList<Task> tasks) {
         try {
             File dir = new File(filePath).getParentFile();
-            if (!dir.exists()) dir.mkdirs();
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
             for (Task task : tasks) {
                 String line = "";
@@ -27,10 +45,12 @@ public class Storage  {
                     line = String.format("T | %d | %s", task.isDone() ? 1 : 0, task.getDescription());
                 } else if (task instanceof Deadline) {
                     Deadline d = (Deadline) task;
-                    line = String.format("D | %d | %s | %s", d.isDone() ? 1 : 0, d.getDescription(), d.getByRaw());
+                    line = String.format("D | %d | %s | %s",
+                            d.isDone() ? 1 : 0, d.getDescription(), d.getByRaw());
                 } else if (task instanceof Event) {
                     Event e = (Event) task;
-                    line = String.format("E | %d | %s | %s | %s", e.isDone() ? 1 : 0, e.getDescription(), e.getFromRaw(), e.getToRaw());
+                    line = String.format("E | %d | %s | %s | %s",
+                            e.isDone() ? 1 : 0, e.getDescription(), e.getFromRaw(), e.getToRaw());
                 }
                 writer.write(line);
                 writer.newLine();
@@ -41,18 +61,30 @@ public class Storage  {
         }
     }
 
-    public ArrayList<Task> loadTasks() throws AmadeusKException {
+    /**
+     * Loads tasks from the file.
+     *
+     * @return List of tasks loaded from the file.
+     * @throws AmadeusException If an I/O error occurs during loading.
+     */
+    public ArrayList<Task> loadTasks() throws AmadeusException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
-        if (!file.exists()) return tasks;
+
+        if (!file.exists()) {
+            return tasks;
+        }
+
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             String line;
+
             while ((line = reader.readLine()) != null) {
                 try {
                     String[] parts = line.split(" \\| ");
                     String type = parts[0];
                     boolean isDone = "1".equals(parts[1]);
+
                     if ("T".equals(type)) {
                         ToDo t = new ToDo(parts[2]);
                         if (isDone) t.markAsDone();
@@ -67,13 +99,14 @@ public class Storage  {
                         tasks.add(e);
                     }
                 } catch (Exception ex) {
-                    // skip corrupted line
+                    // Skip corrupted line
                 }
             }
             reader.close();
         } catch (IOException e) {
-            throw new AmadeusKException("Error loading tasks from file: " + e.getMessage());
+            throw new AmadeusException("Error loading tasks from file: " + e.getMessage());
         }
+
         return tasks;
     }
 }
