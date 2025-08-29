@@ -36,7 +36,7 @@ public class AmadeusK {
                     line = String.format("T | %d | %s", task.isDone ? 1 : 0, task.getDescription());
                 } else if (task instanceof Deadline) {
                     Deadline d = (Deadline) task;
-                    line = String.format("D | %d | %s | %s", d.isDone ? 1 : 0, d.getDescription(), d.by);
+                    line = String.format("D | %d | %s | %s", d.isDone ? 1 : 0, d.getDescription(), d.getByRaw());
                 } else if (task instanceof Event) {
                     Event e = (Event) task;
                     line = String.format("E | %d | %s | %s | %s", e.isDone ? 1 : 0, e.getDescription(), e.from, e.to);
@@ -152,7 +152,7 @@ public class AmadeusK {
                     printMessage("Got it. I've added this task:\n  " + newTask + "\nNow you have " + tasks.size() + " tasks in the list.");
                     saveTasks(tasks);
                 } else {
-                    printMessage("Please use the format: deadline <description> /by <time>");
+                    printMessage("Please use the format: deadline <description> /by <yyyy-mm-dd>");
                 }
                 input = sc.nextLine();
             }
