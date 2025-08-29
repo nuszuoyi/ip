@@ -1,5 +1,9 @@
 package ui;
 
+import java.util.ArrayList;
+
+import tasks.Task;
+
 /**
  * Handles user interface interactions such as printing messages and errors.
  */
@@ -29,4 +33,18 @@ public class Ui {
     public void showLoadingError() {
         System.out.println("Oops! Something went wrong while loading your tasks.");
     }
+
+    public void showMatchingTasks(ArrayList<Task> tasks) {
+        System.out.println("    ____________________________________________________________");
+        if (tasks.isEmpty()) {
+            System.out.println("     No matching tasks found.");
+        } else {
+            System.out.println("     Here are the matching tasks in your list:");
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println("     " + (i + 1) + "." + tasks.get(i));
+            }
+        }
+        System.out.println("    ____________________________________________________________");
+    }
+
 }

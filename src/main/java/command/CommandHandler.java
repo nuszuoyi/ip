@@ -57,7 +57,21 @@ public class CommandHandler {
         case DELETE:
             deleteTask(command);
             break;
+        case FIND:
+            if (command.args.length == 0) {
+                ui.printMessage("OOPS!!! The find command requires a keyword.");
+                break;
+            }
+            String keyword = String.join(" ", command.args); 
+            ui.showMatchingTasks(tasks.findTasks(keyword));
+            break;
         case BYE:
+            ui.printMessage("Bye. Hope to see you again soon!");
+            break;
+        case INVALID:
+            
+            ui.printMessage("Sorry, I didn't understand that command. Please try again!");
+            break;
         default:
             // do nothing
             break;

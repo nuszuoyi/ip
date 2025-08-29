@@ -12,7 +12,7 @@ public class Parser {
 
     /** Enum representing all possible command types */
     public enum CommandType {
-        LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, BYE, INVALID
+        LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, FIND, BYE, INVALID
     }
 
     /**
@@ -70,7 +70,10 @@ public class Parser {
             return new Command(CommandType.DELETE, new String[]{input.split(" ")[1]});
         } else if (input.equals("bye")) {
             return new Command(CommandType.BYE, new String[]{});
-        } else {
+        } else if (input.startsWith("find")) {
+            String keyword = input.substring(5).trim();
+            return new Command(CommandType.FIND, new String[]{keyword});
+        }else {
             return new Command(CommandType.INVALID, new String[]{});
         }
     }
