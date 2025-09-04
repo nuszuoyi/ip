@@ -3,12 +3,12 @@ package main;
 import java.io.File;
 import java.util.Scanner;
 
+import command.CommandHandler;
 import exceptions.AmadeusException;
 import parser.Parser;
 import storage.Storage;
 import tasks.TaskList;
 import ui.Ui;
-import command.CommandHandler;
 
 /**
  * Represents the Amadeus chatbot application.

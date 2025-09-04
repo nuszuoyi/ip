@@ -34,6 +34,11 @@ public class Ui {
         System.out.println("Oops! Something went wrong while loading your tasks.");
     }
 
+    /**
+     * Prints tasks that match a search keyword.
+     *
+     * @param tasks List of matching tasks to display.
+     */
     public void showMatchingTasks(ArrayList<Task> tasks) {
         System.out.println("    ____________________________________________________________");
         if (tasks.isEmpty()) {

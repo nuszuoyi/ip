@@ -62,14 +62,13 @@ public class CommandHandler {
                 ui.printMessage("OOPS!!! The find command requires a keyword.");
                 break;
             }
-            String keyword = String.join(" ", command.args); 
+            String keyword = String.join(" ", command.args);
             ui.showMatchingTasks(tasks.findTasks(keyword));
             break;
         case BYE:
             ui.printMessage("Bye. Hope to see you again soon!");
             break;
         case INVALID:
-            
             ui.printMessage("Sorry, I didn't understand that command. Please try again!");
             break;
         default:

@@ -73,7 +73,7 @@ public class Parser {
         } else if (input.startsWith("find")) {
             String keyword = input.substring(5).trim();
             return new Command(CommandType.FIND, new String[]{keyword});
-        }else {
+        } else {
             return new Command(CommandType.INVALID, new String[]{});
         }
     }
