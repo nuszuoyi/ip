@@ -57,6 +57,7 @@ public abstract class Task {
      * @return Task description.
      */
     public String getDescription() {
+        assert description != null : "Task description should never be null";
         return description;
     }
 
@@ -75,6 +76,7 @@ public abstract class Task {
      * @return TaskType of the task.
      */
     public TaskType getType() {
+        assert type != null : "Task type should never be null";
         return type;
     }
 
