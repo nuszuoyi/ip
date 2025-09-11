@@ -3,12 +3,12 @@ package main;
 import java.io.File;
 import java.util.Scanner;
 
+import command.CommandHandler;
 import exceptions.AmadeusException;
 import parser.Parser;
 import storage.Storage;
 import tasks.TaskList;
 import ui.Ui;
-import command.CommandHandler;
 
 /**
  * Represents the Amadeus chatbot application.
@@ -46,7 +46,53 @@ public class Amadeus {
     }
 
     /**
+     * Default constructor for GUI usage.
+     * Uses default file path for storage.
+     */
+    public Amadeus() {
+        this("." + File.separator + "data" + File.separator + "Amadeus.txt");
+    }
+
+    /**
+     * Gets a response from Amadeus based on user input.
+     * This method is used by the GUI to interact with the bot.
+     *
+     * @param input The user's input string
+     * @return The response from Amadeus
+     */
+    public String getResponse(String input) {
+        try {
+            // Handle special case for "bye" command
+            if (input.trim().equalsIgnoreCase("bye")) {
+                return "Bye. Hope to see you again soon!";
+            }
+            
+            // Use a custom UI that captures the response as a string
+            StringCapturingUi stringUi = new StringCapturingUi();
+            CommandHandler guiHandler = new CommandHandler(tasks, storage, stringUi);
+            
+            // Process the command
+            guiHandler.handleCommand(Parser.parse(input));
+            
+            // Return the captured response
+            return stringUi.getCapturedOutput();
+        } catch (Exception e) {
+            return "Oops! Something went wrong: " + e.getMessage();
+        }
+    }
+
+    /**
+     * Gets the initial greeting message from Amadeus.
+     *
+     * @return The greeting message
+     */
+    public String getGreeting() {
+        return "Hello! I'm Amadeus\nWhat can I do for you?";
+    }
+
+    /**
      * Runs the main loop of the chatbot, reading user input and handling commands.
+     * This method is used for CLI mode.
      */
     public void run() {
         Scanner sc = new Scanner(System.in);
@@ -63,12 +109,43 @@ public class Amadeus {
     }
 
     /**
-     * Main entry point of the application.
+     * Main entry point of the application for CLI mode.
      *
      * @param args Command line arguments (ignored).
      */
     public static void main(String[] args) {
         final String filePath = "." + File.separator + "data" + File.separator + "Amadeus.txt";
         new Amadeus(filePath).run();
+    }
+
+    /**
+     * Inner class to capture UI output as a string for GUI usage.
+     */
+    private static class StringCapturingUi extends Ui {
+        private StringBuilder capturedOutput = new StringBuilder();
+
+        @Override
+        public void printMessage(String message) {
+            if (capturedOutput.length() > 0) {
+                capturedOutput.append("\n");
+            }
+            capturedOutput.append(message);
+        }
+
+        @Override
+        public void showLoadingError() {
+            printMessage("Error loading tasks from file.");
+        }
+
+        /**
+         * Gets the captured output and resets the buffer.
+         *
+         * @return The captured output string
+         */
+        public String getCapturedOutput() {
+            String output = capturedOutput.toString();
+            capturedOutput = new StringBuilder();
+            return output;
+        }
     }
 }

@@ -1,13 +1,18 @@
 package storage;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.io.*;
 
 import exceptions.AmadeusException;
-import tasks.Task;
-import tasks.ToDo;
 import tasks.Deadline;
 import tasks.Event;
+import tasks.Task;
+import tasks.ToDo;
 
 /**
  * Handles saving and loading tasks from the local file system.
@@ -32,13 +37,12 @@ public class Storage {
      * @param tasks List of tasks to be saved.
      */
     public void saveTasks(ArrayList<Task> tasks) {
-        try {
-            File dir = new File(filePath).getParentFile();
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
+        File dir = new File(filePath).getParentFile();
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Task task : tasks) {
                 String line = "";
                 if (task instanceof ToDo) {
@@ -55,7 +59,6 @@ public class Storage {
                 writer.write(line);
                 writer.newLine();
             }
-            writer.close();
         } catch (IOException e) {
             System.out.println("Error saving tasks: " + e.getMessage());
         }
@@ -75,8 +78,7 @@ public class Storage {
             return tasks;
         }
 
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
 
             while ((line = reader.readLine()) != null) {
@@ -87,22 +89,27 @@ public class Storage {
 
                     if ("T".equals(type)) {
                         ToDo t = new ToDo(parts[2]);
-                        if (isDone) t.markAsDone();
+                        if (isDone) {
+                            t.markAsDone();
+                        }
                         tasks.add(t);
                     } else if ("D".equals(type)) {
                         Deadline d = new Deadline(parts[2], parts[3]);
-                        if (isDone) d.markAsDone();
+                        if (isDone) {
+                            d.markAsDone();
+                        }
                         tasks.add(d);
                     } else if ("E".equals(type)) {
                         Event e = new Event(parts[2], parts[3], parts[4]);
-                        if (isDone) e.markAsDone();
+                        if (isDone) {
+                            e.markAsDone();
+                        }
                         tasks.add(e);
                     }
                 } catch (Exception ex) {
                     // Skip corrupted line
                 }
             }
-            reader.close();
         } catch (IOException e) {
             throw new AmadeusException("Error loading tasks from file: " + e.getMessage());
         }

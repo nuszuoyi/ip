@@ -73,7 +73,6 @@ public class TaskList {
         return tasks.remove(index);
     }
 
-    
     /**
      * Finds and returns tasks that contain the specified keyword in their description.
      *
@@ -89,7 +88,5 @@ public class TaskList {
         }
         return matching;
     }
-
-    
 }
 

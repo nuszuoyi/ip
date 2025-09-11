@@ -1,11 +1,15 @@
 package parser;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
+
 import tasks.Deadline;
 import tasks.Event;
 import tasks.Task;
 import tasks.ToDo;
+
 
 /**
  * Tests the functionality of the Parser class, including command parsing
@@ -54,12 +58,14 @@ public class ParserTest {
         assertTrue(todo instanceof ToDo);
         assertEquals("Write tests", todo.getDescription());
 
-        Parser.Command deadlineCmd = new Parser.Command(Parser.CommandType.DEADLINE, new String[]{"Submit report", "2025-08-30"});
+        Parser.Command deadlineCmd = new Parser.Command(
+                Parser.CommandType.DEADLINE, new String[]{"Submit report", "2025-08-30"});
         Task deadline = Parser.createTask(deadlineCmd);
         assertTrue(deadline instanceof Deadline);
         assertEquals("Submit report", deadline.getDescription());
 
-        Parser.Command eventCmd = new Parser.Command(Parser.CommandType.EVENT, new String[]{"Conference", "2025-09-01", "2025-09-03"});
+        Parser.Command eventCmd = new Parser.Command(
+                Parser.CommandType.EVENT, new String[]{"Conference", "2025-09-01", "2025-09-03"});
         Task event = Parser.createTask(eventCmd);
         assertTrue(event instanceof Event);
         assertEquals("Conference", event.getDescription());
