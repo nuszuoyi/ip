@@ -58,12 +58,7 @@ public class CommandHandler {
             deleteTask(command);
             break;
         case FIND:
-            if (command.args.length == 0) {
-                ui.printMessage("OOPS!!! The find command requires a keyword.");
-                break;
-            }
-            String keyword = String.join(" ", command.args);
-            ui.showMatchingTasks(tasks.findTasks(keyword));
+            handleFindCommand(command);
             break;
         case BYE:
             ui.printMessage("Bye. Hope to see you again soon!");
@@ -96,29 +91,44 @@ public class CommandHandler {
      * @param done True to mark as done, false to mark as not done.
      */
     private void markTask(Parser.Command command, boolean done) {
+        int index;
         try {
-            int index = Integer.parseInt(command.args[0]) - 1;
-            if (index >= 0 && index < tasks.size()) {
-                Task task = tasks.get(index);
-                if (done) {
-                    task.markAsDone();
-                    ui.printMessage(String.format(
-                        "Nice! I've marked this task as done:\n  [X] %s",
-                        task.getDescription()));
-                } else {
-                    task.markAsUndone();
-                    ui.printMessage(String.format(
-                        "OK, I've marked this task as not done yet:\n  [ ] %s",
-                        task.getDescription()));
-                }
-                storage.saveTasks(tasks.getTasks());
-            } else {
-                ui.printMessage("Sorry, that task number does not exist.");
-            }
-        } catch (Exception e) {
+            index = Integer.parseInt(command.args[0]) - 1;
+        } catch (NumberFormatException e) {
             ui.printMessage("Please enter a valid task number.");
+            return;
         }
+
+        if (!isValidTaskIndex(index)) {
+            ui.printMessage("Sorry, that task number does not exist.");
+            return;
+        }
+
+        updateTaskStatus(index, done);
     }
+
+    private boolean isValidTaskIndex(int index) {
+        return index >= 0 && index < tasks.size();
+    }
+
+    private void updateTaskStatus(int index, boolean done) {
+        Task task = tasks.get(index);
+        if (done) {
+            task.markAsDone();
+            ui.printMessage(formatTaskMessage(task, true));
+        } else {
+            task.markAsUndone();
+            ui.printMessage(formatTaskMessage(task, false));
+        }
+        storage.saveTasks(tasks.getTasks());
+    }
+
+    private String formatTaskMessage(Task task, boolean done) {
+        return done
+            ? String.format("Nice! I've marked this task as done:\n  [X] %s", task.getDescription())
+            : String.format("OK, I've marked this task as not done yet:\n  [ ] %s", task.getDescription());
+    }
+
 
     /**
      * Adds a new task to the task list based on the command.
@@ -158,5 +168,15 @@ public class CommandHandler {
         } catch (Exception e) {
             ui.printMessage("Please enter a valid task number to delete.");
         }
+    }
+
+    private void handleFindCommand(Parser.Command command) {
+        if (command.args.length == 0) {
+            ui.printMessage("OOPS!!! The find command requires a keyword.");
+            return;
+        }
+
+        String keyword = String.join(" ", command.args);
+        ui.showMatchingTasks(tasks.findTasks(keyword));
     }
 }
