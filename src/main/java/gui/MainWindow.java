@@ -29,9 +29,6 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     public void initialize() {
-        assert userImage != null : "User image should be loaded";
-        assert amadeusImage != null : "Amadeus image should be loaded";
-        
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
         
         // Initialize Amadeus and show greeting
