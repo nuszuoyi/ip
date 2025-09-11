@@ -12,7 +12,7 @@ public class Parser {
 
     /** Enum representing all possible command types */
     public enum CommandType {
-        LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, FIND, BYE, INVALID
+        LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, FIND, BYE, INVALID, HELP
     }
 
     /**
@@ -47,7 +47,7 @@ public class Parser {
             return new Command(CommandType.INVALID, new String[]{});
         }
 
-        String[] tokens = input.split(" ", 2);  // 第一个单词 + 剩余
+        String[] tokens = input.split(" ", 2); 
         String commandWord = tokens[0];
         String args = tokens.length > 1 ? tokens[1] : "";
 
@@ -70,6 +70,8 @@ public class Parser {
             return new Command(CommandType.BYE, new String[]{});
         case "find":
             return parseFind(args);
+        case "help":
+            return new Command(CommandType.HELP, new String[]{});
         default:
             return new Command(CommandType.INVALID, new String[]{});
         }

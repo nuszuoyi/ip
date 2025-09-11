@@ -31,7 +31,7 @@ public class Ui {
      * Shows a loading error message when tasks cannot be loaded.
      */
     public void showLoadingError() {
-        System.out.println("Oops! Something went wrong while loading your tasks.");
+        printMessage("Oops! Something went wrong while loading your tasks.");
     }
 
     /**
@@ -40,16 +40,17 @@ public class Ui {
      * @param tasks List of matching tasks to display.
      */
     public void showMatchingTasks(ArrayList<Task> tasks) {
-        System.out.println("    ____________________________________________________________");
         if (tasks.isEmpty()) {
-            System.out.println("     No matching tasks found.");
-        } else {
-            System.out.println("     Here are the matching tasks in your list:");
-            for (int i = 0; i < tasks.size(); i++) {
-                System.out.println("     " + (i + 1) + "." + tasks.get(i));
-            }
+            printMessage("No matching tasks found.");
+            return;
         }
-        System.out.println("    ____________________________________________________________");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Here are the matching tasks in your list:");
+        for (int i = 0; i < tasks.size(); i++) {
+            sb.append("\n").append(i + 1).append(".").append(tasks.get(i));
+        }
+        printMessage(sb.toString());
     }
 
 }

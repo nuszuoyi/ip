@@ -1,5 +1,8 @@
 package command;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 import parser.Parser;
 import storage.Storage;
 import tasks.Task;
@@ -50,9 +53,17 @@ public class CommandHandler {
             markTask(command, false);
             break;
         case TODO:
-        case DEADLINE:
-        case EVENT:
             addTask(command);
+            break;
+        case DEADLINE:
+            if(timeCheckDeadline(command)) {
+                addTask(command);
+            }
+            break;
+        case EVENT:
+            if(timeCheckEvent(command)) {
+                addTask(command);
+            }
             break;
         case DELETE:
             deleteTask(command);
@@ -65,6 +76,9 @@ public class CommandHandler {
             break;
         case INVALID:
             ui.printMessage("Sorry, I didn't understand that command. Please try again!");
+            break;
+        case HELP:
+            showHelp();
             break;
         default:
             // do nothing
@@ -129,6 +143,51 @@ public class CommandHandler {
             : String.format("OK, I've marked this task as not done yet:\n  [ ] %s", task.getDescription());
     }
 
+    private boolean timeCheckDeadline(Parser.Command command) {
+        assert command.type == Parser.CommandType.DEADLINE;
+        
+        String by = command.args[1];
+        
+        try {
+            LocalDate.parse(by); 
+        } catch (DateTimeParseException e) {
+            ui.printMessage("Invalid date format for deadline. Please use YYYY-MM-DD.");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean timeCheckEvent(Parser.Command command) {
+        assert command.type == Parser.CommandType.EVENT;
+        
+        
+        String from = command.args[1];
+        String to = command.args[2];
+        
+        LocalDate fromDate;
+        LocalDate toDate;
+
+        try {
+            fromDate = LocalDate.parse(from);
+        } catch (DateTimeParseException e) {
+            ui.printMessage("Invalid start date for event. Expected yyyy-MM-dd.");
+            return false;
+        }
+
+        try {
+            toDate = LocalDate.parse(to);
+        } catch (DateTimeParseException e) {
+            ui.printMessage("Invalid end date for event. Expected yyyy-MM-dd.");
+            return false;
+        }
+
+        if (toDate.isBefore(fromDate)) {
+            ui.printMessage("End date cannot be before start date for an event.");
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * Adds a new task to the task list based on the command.
@@ -179,4 +238,23 @@ public class CommandHandler {
         String keyword = String.join(" ", command.args);
         ui.showMatchingTasks(tasks.findTasks(keyword));
     }
+
+    private void showHelp() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Amadeus Help:\n");
+        sb.append("Available commands:\n");
+        sb.append("1. list               - Show all tasks\n");
+        sb.append("2. mark <num>         - Mark a task as done\n");
+        sb.append("3. unmark <num>       - Mark a task as not done\n");
+        sb.append("4. todo <desc>        - Add a ToDo task\n");
+        sb.append("5. deadline <desc> /by <date> - Add a Deadline task\n");
+        sb.append("6. event <desc> /from <start> /to <end> - Add an Event task\n");
+        sb.append("7. delete <num>       - Delete a task\n");
+        sb.append("8. find <keyword>     - Search tasks\n");
+        sb.append("9. bye                - Exit\n");
+        sb.append("10. help              - Show this help message\n");
+
+        ui.printMessage(sb.toString());
+    }
+
 }

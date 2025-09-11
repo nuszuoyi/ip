@@ -92,7 +92,7 @@ public class Amadeus {
      * @return The greeting message
      */
     public String getGreeting() {
-        return "Hello! I'm Amadeus\nWhat can I do for you?";
+        return "Hello! I'm Amadeus.\nWhat can I do for you?";
     }
 
     /**
@@ -101,7 +101,7 @@ public class Amadeus {
      */
     public void run() {
         Scanner sc = new Scanner(System.in);
-        ui.printMessage("Hello! I'm Amadeus\nWhat can I do for you?");
+        ui.printMessage(getGreeting());
         String input = sc.nextLine();
 
         while (!input.equals("bye")) {
