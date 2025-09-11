@@ -43,11 +43,6 @@ public class Amadeus {
             tasks = new TaskList();
         }
         handler = new CommandHandler(tasks, storage, ui);
-
-        assert tasks != null : "TaskList should be initialized";
-        assert handler != null : "CommandHandler should be initialized";
-        assert storage != null : "Storage should be initialized";
-        assert ui != null : "UI should be initialized";
     }
 
     /**
